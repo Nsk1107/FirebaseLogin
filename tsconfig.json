@@ -2,10 +2,11 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "baseUrl": ".", // ✅ Required for path aliasing
     "paths": {
       "@/*": [
         "./*"
-      ]
+      ] // ✅ Now works correctly
     }
   },
   "include": [
