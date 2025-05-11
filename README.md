@@ -1,50 +1,92 @@
-# Welcome to your Expo app 👋
+# FirebaseLogin App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is the second exercise of the **EA 3141 - Mobile Application Development II** course. The app is built using **React Native** with **Expo** and implements **Firebase Authentication** for login and signup functionality. It also includes a feed screen with image display and a profile screen showing user details.
 
-## Get started
+## Features
 
-1. Install dependencies
+* **User Authentication** with Firebase (Email & Password)
+* **Signup** and **Login** screens
+* **Feed Page** displaying sample image cards
+* **Camera Access** using `expo-image-picker`
+* **User Profile** screen with email and UID
+* **Bottom Tabs Navigation** using `expo-router`
 
-   ```bash
-   npm install
-   ```
+## File Structure
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+FirebaseLogin/
+├── app/
+│   ├── (tabs)/
+│   │   ├── _layout.tsx
+│   │   ├── feed.tsx
+│   │   └── profile.tsx
+│   ├── index.tsx         # Login screen
+│   └── signup.tsx        # Signup screen
+├── components/
+│   └── CameraScreen.tsx  # Camera access screen (optional)
+├── firebaseConfig.ts     # Firebase configuration
+├── app.json
+├── package.json
+└── README.md             # This file
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 1. Clone the Repository
 
-## Learn more
+```bash
+git clone https://github.com/Nsk1107/FirebaseLogin.git
+cd FirebaseLogin
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## 2. Install Dependencies
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm install
+```
 
-## Join the community
+Also make sure the following packages are installed:
 
-Join our community of developers creating universal apps.
+```bash
+npx expo install firebase
+npx expo install expo-image-picker
+npx expo install expo-router
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 3. Configure Firebase
+
+* Create a project on [Firebase Console](https://console.firebase.google.com/).
+* Enable **Email/Password Authentication** under **Authentication > Sign-in Method**.
+* Copy the Firebase config object into `firebaseConfig.ts`:
+
+```ts
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: 'YOUR_API_KEY',
+  authDomain: 'YOUR_AUTH_DOMAIN',
+  projectId: 'YOUR_PROJECT_ID',
+  storageBucket: 'YOUR_STORAGE_BUCKET',
+  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+  appId: 'YOUR_APP_ID',
+};
+
+const app = initializeApp(firebaseConfig);
+export const FIREBASE_AUTH = getAuth(app);
+```
+
+## 4. Run the App
+
+```bash
+npx expo start
+```
+
+Use Expo Go app on your device or an emulator to preview the app.
+
+---
+
+📚 License
+This project is part of coursework for EA 3141 and is intended for academic learning only.
+
+👨‍🎓 Author
+Coursework by Nandika Sirinuwan
+EA 3141 – Mobile Application Development II
