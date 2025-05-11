@@ -7,6 +7,7 @@ import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } fr
 export default function FeedScreen() {
     const router = useRouter();
     const [image, setImage] = useState<string | null>(null);
+    const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
     const handleImagePick = () => {
         Alert.alert(
@@ -34,7 +35,8 @@ export default function FeedScreen() {
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            const uri = result.assets[0].uri;
+            setUploadedImages(prev => [...prev, uri]);
         }
     };
 
@@ -51,9 +53,12 @@ export default function FeedScreen() {
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            const uri = result.assets[0].uri;
+            setUploadedImages(prev => [...prev, uri]);
         }
     };
+
+
 
     return (
         <View style={styles.container}>
@@ -69,6 +74,16 @@ export default function FeedScreen() {
                     <Image source={{ uri: 'https://picsum.photos/400/200?desert' }} style={styles.image} />
                     <Text style={styles.title}>Anuradhapura, North Western Province</Text>
                 </View>
+
+                {/* Dynamically added images */}
+                {uploadedImages.map((uri, index) => (
+                    <View style={styles.card} key={index}>
+                        <Image source={{ uri }} style={styles.image} />
+                        <Text style={styles.title}>Uploaded Photo</Text>
+                        <Text style={styles.time}>Just now</Text>
+                    </View>
+                ))}
+
             </ScrollView>
 
             <TouchableOpacity style={styles.cameraButton} onPress={handleImagePick}>
