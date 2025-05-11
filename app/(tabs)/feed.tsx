@@ -1,8 +1,60 @@
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function FeedScreen() {
+    const router = useRouter();
+    const [image, setImage] = useState<string | null>(null);
+
+    const handleImagePick = () => {
+        Alert.alert(
+            'Upload Photo',
+            'Choose an option',
+            [
+                { text: 'Camera', onPress: openCamera },
+                { text: 'Gallery', onPress: openGallery },
+                { text: 'Cancel', style: 'cancel' },
+            ],
+            { cancelable: true }
+        );
+    };
+
+    const openCamera = async () => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Permission Denied', 'Camera access is required.');
+            return;
+        }
+
+        const result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+    const openGallery = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Permission Denied', 'Gallery access is required.');
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
     return (
         <View style={styles.container}>
             {/* Scrollable Feed */}
@@ -19,10 +71,10 @@ export default function FeedScreen() {
                 </View>
             </ScrollView>
 
-            {/* Floating Camera Button */}
-            <TouchableOpacity style={styles.cameraButton}>
+            <TouchableOpacity style={styles.cameraButton} onPress={handleImagePick}>
                 <Ionicons name="camera" size={28} color="white" />
             </TouchableOpacity>
+
         </View>
     );
 }
