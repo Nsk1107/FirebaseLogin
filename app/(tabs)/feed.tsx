@@ -20,7 +20,7 @@ export default function FeedScreen() {
                 { text: 'Gallery', onPress: openGallery },
                 { text: 'Cancel', style: 'cancel' },
             ],
-            { cancelable: false }
+            { cancelable: true }
         );
     };
 
