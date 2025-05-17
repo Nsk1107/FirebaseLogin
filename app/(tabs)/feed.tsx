@@ -2,12 +2,14 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function FeedScreen() {
     const router = useRouter();
     const [image, setImage] = useState<string | null>(null);
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
+
 
     const handleImagePick = () => {
         Alert.alert(
@@ -18,7 +20,7 @@ export default function FeedScreen() {
                 { text: 'Gallery', onPress: openGallery },
                 { text: 'Cancel', style: 'cancel' },
             ],
-            { cancelable: true }
+            { cancelable: false }
         );
     };
 
@@ -36,7 +38,8 @@ export default function FeedScreen() {
 
         if (!result.canceled) {
             const uri = result.assets[0].uri;
-            setUploadedImages(prev => [...prev, uri]);
+            //setUploadedImages(prev => [...prev, uri]);
+            await uploadImageToServer(uri);
         }
     };
 
@@ -54,7 +57,58 @@ export default function FeedScreen() {
 
         if (!result.canceled) {
             const uri = result.assets[0].uri;
-            setUploadedImages(prev => [...prev, uri]);
+            //setUploadedImages(prev => [...prev, uri]);
+            await uploadImageToServer(uri);
+        }
+    };
+
+    const uploadImageToServer = async (photoUri: string) => {
+        console.log('📤 Uploading image to server:', photoUri); // Log the image URI being uploaded
+        setLoading(true);
+        const form = new FormData();
+
+        form.append('image', {
+            uri: photoUri,
+            name: `photo_${Date.now()}.jpg`,
+            type: 'image/jpeg',
+        } as any);
+
+        //console.log('📤 Form data:', form); // Log the form data being sent
+
+        try {
+            const res = await fetch('http://ea3141.mooo.com/api/upload.php?upload=image', {
+                method: 'POST',
+                body: form,
+                headers: { 'Accept': 'application/json' },
+            });
+
+            //console.log('📤 Server response status:', res.status);
+            //console.log('📤 Server response headers:', res.headers);
+
+            // Get raw response text
+            const rawText = await res.text();
+            console.log('📄 Raw response text:\n', rawText);
+
+            // Try to parse JSON
+            const data = JSON.parse(rawText);
+            console.log('✅ Parsed JSON:\n', data);
+
+            //const data = await res.json();
+
+            if (data.response === true && data.result.success === true) {
+                const uploadedUrl = data.result.path;
+                console.log('📸 Uploaded URL:', uploadedUrl);
+                setUploadedImages(prev => [...prev, uploadedUrl]);
+                Alert.alert('Upload Successful', 'Your photo has been uploaded successfully.');
+            } else {
+                Alert.alert('Upload Failed', data.result?.message || 'Unknown error');
+            }
+
+        } catch (error) {
+            console.error('Upload error:', error);
+            Alert.alert('Upload Error', 'Something went wrong during upload.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -79,7 +133,7 @@ export default function FeedScreen() {
                 {uploadedImages.map((uri, index) => (
                     <View style={styles.card} key={index}>
                         <Image source={{ uri }} style={styles.image} />
-                        <Text style={styles.title}>Uploaded Photo</Text>
+                        <Text style={styles.title}>{`#${index + 1}`}</Text>
                         <Text style={styles.time}>Just now</Text>
                     </View>
                 ))}
@@ -89,8 +143,14 @@ export default function FeedScreen() {
             <TouchableOpacity style={styles.cameraButton} onPress={handleImagePick}>
                 <Ionicons name="camera" size={28} color="white" />
             </TouchableOpacity>
+            {loading && (
+                <View style={styles.loadingOverlay}>
+                    <ActivityIndicator size="large" color="#007bff" />
+                </View>
+            )}
 
         </View>
+
     );
 }
 
@@ -160,4 +220,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         elevation: 5,
     },
+    loadingOverlay: {
+        position: 'absolute',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 999,
+    },
+
 });
