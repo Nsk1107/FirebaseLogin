@@ -1,7 +1,7 @@
 import { Link, useRouter } from 'expo-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { FIREBASE_AUTH } from '../firebaseConfig';
 
 
@@ -10,8 +10,10 @@ export default function Index() {
   const [password, setPassword] = useState('');
   const router = useRouter();
   const auth = FIREBASE_AUTH;
+  const [loading, setLoading] = useState(false);
 
   const signIn = async () => {
+    setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log('Login successful:', response);
@@ -21,6 +23,7 @@ export default function Index() {
       console.error('Login error:', error);
       Alert.alert('Login error', error.message);
     }
+    setLoading(false);
   };
 
   return (
@@ -59,6 +62,11 @@ export default function Index() {
           </TouchableOpacity>
         </Link>
       </View>
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#007bff" />
+        </View>
+      )}
     </View>
   );
 }
@@ -88,5 +96,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16, color: '#333',
-  }
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+  },
 });

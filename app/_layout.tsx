@@ -11,9 +11,12 @@ export default function RootLayout() {
         title: 'Signup',
         headerShown: false,
       }} />
-
       <Stack.Screen name="(tabs)" options={{
         headerShown: false,
+      }} />
+      <Stack.Screen name="settings" options={{
+        title: 'Settings',
+        headerShown: true,
       }} />
     </Stack>
   );

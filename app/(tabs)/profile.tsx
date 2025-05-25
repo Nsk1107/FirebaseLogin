@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -34,8 +34,13 @@ export default function ProfileScreen() {
                 <Text style={styles.email}>Email: {email}</Text>
                 <Text style={styles.userId}>User ID: {userId}</Text>
             </View>
+            <Link href="/settings" asChild>
+                <TouchableOpacity style={styles.settingButton}>
+                    <Text style={styles.buttonText}>Setting</Text>
+                </TouchableOpacity>
+            </Link>
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Text style={styles.logoutText}>Logout</Text>
+                <Text style={styles.buttonText}>Logout</Text>
             </TouchableOpacity>
         </View>
     );
@@ -85,9 +90,18 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
     },
-    logoutText: {
+    buttonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    settingButton: {
+        marginTop: 30,
+        backgroundColor: '#007AFF',
+        paddingVertical: 15,
+        paddingHorizontal: 40,
+        borderRadius: 10,
+        width: '100%',
+        alignItems: 'center',
     },
 });
