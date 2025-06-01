@@ -39,6 +39,9 @@ export default function ProfileScreen() {
                     <Text style={styles.buttonText}>Setting</Text>
                 </TouchableOpacity>
             </Link>
+            <TouchableOpacity onPress={() => router.push("/deviceControl")} style={styles.settingButton}>
+                <Text style={styles.buttonText}>Device Control</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.buttonText}>Logout</Text>
             </TouchableOpacity>

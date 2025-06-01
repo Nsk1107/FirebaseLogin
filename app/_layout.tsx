@@ -18,6 +18,10 @@ export default function RootLayout() {
         title: 'Settings',
         headerShown: true,
       }} />
+      <Stack.Screen name="deviceControl" options={{
+        title: 'Device Control',
+        headerShown: true,
+      }} />
     </Stack>
   );
 }
