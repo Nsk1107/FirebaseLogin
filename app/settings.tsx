@@ -10,6 +10,7 @@ export default function SettingsScreen() {
   const [email, setEmail] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [locationString, setLocationString] = useState('');
   const [loadingLocation, setLoadingLocation] = useState(true);
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function SettingsScreen() {
           setEmail(data.email || '');
           setLatitude(data.latitude || '');
           setLongitude(data.longitude || '');
+          setLocationString(data.locationString || '');
         }
       } catch (error: any) {
         Alert.alert('Error loading settings', error.message);
@@ -45,6 +47,8 @@ export default function SettingsScreen() {
         const location = await Location.getCurrentPositionAsync({});
         setLatitude(location.coords.latitude.toString());
         setLongitude(location.coords.longitude.toString());
+        setLocationString(await getLocationString(location.coords.latitude, location.coords.longitude));
+
       } catch (error) {
         if (error instanceof Error) {
           Alert.alert('Error getting location', error.message);
@@ -59,6 +63,17 @@ export default function SettingsScreen() {
     fetchUserDataAndLocation();
   }, []);
 
+  const getLocationString = async (lat: number, lon: number) => {
+    const reverseGeocode = await Location.reverseGeocodeAsync({
+      latitude: lat,
+      longitude: lon,
+    });
+    const locationName = reverseGeocode.length > 0
+      ? `${reverseGeocode[0].city || reverseGeocode[0].region}, ${reverseGeocode[0].country}`
+      : 'Unknown location';
+    return locationName.toString();
+  };
+
   const saveSettings = async () => {
     if (!FIREBASE_AUTH.currentUser) {
       Alert.alert('You must be logged in');
@@ -72,11 +87,13 @@ export default function SettingsScreen() {
         email,
         latitude,
         longitude,
+        locationString,
       }, { merge: true });
 
       Alert.alert('Settings saved!');
     } catch (error: any) {
       Alert.alert('Error saving settings', error.message);
+      //console.log(error);
     }
   };
 
@@ -103,6 +120,9 @@ export default function SettingsScreen() {
 
           <Text style={styles.label}>Longitude</Text>
           <TextInput style={styles.input} value={longitude} editable={false} />
+
+          <Text style={styles.label}>Location</Text>
+          <TextInput style={styles.input} value={locationString} editable={false} />
         </>
       )}
 
