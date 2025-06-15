@@ -32,6 +32,7 @@ export default function Index() {
 
       <Text style={styles.title}>Login</Text>
 
+
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -77,7 +78,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', padding: 20,
   },
   title: {
-    fontSize: 32, fontWeight: 'bold', marginBottom: 40,
+    fontSize: 32, fontWeight: 'bold', marginBottom: 10, textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 18, fontWeight: 'bold', marginBottom: 40, textAlign: 'center', color: '#555',
   },
   input: {
     width: '100%', height: 50, borderColor: '#ccc',

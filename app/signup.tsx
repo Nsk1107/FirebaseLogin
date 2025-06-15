@@ -44,7 +44,9 @@ export default function SignupScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Create Account</Text>
+            <Text style={styles.title}>Welcome to TeamConnect</Text>
+            <Text style={styles.subtitle}>Employee Portal</Text>
+
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -92,9 +94,10 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginBottom: 40,
+        fontSize: 24, fontWeight: 'bold', marginBottom: 10, textAlign: 'center',
+    },
+    subtitle: {
+        fontSize: 18, fontWeight: 'bold', marginBottom: 40, textAlign: 'center', color: '#555',
     },
     text: {
         fontSize: 16,

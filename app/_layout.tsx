@@ -22,6 +22,14 @@ export default function RootLayout() {
         title: 'Device Control',
         headerShown: true,
       }} />
+      <Stack.Screen name="weather" options={{
+        title: 'Weather',
+        headerShown: true,
+      }} />
+      <Stack.Screen name="empData" options={{
+        title: 'Employee Directory',
+        headerShown: true,
+      }} />
     </Stack>
   );
 }

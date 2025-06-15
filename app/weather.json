@@ -1,0 +1,44 @@
+{
+    "base": "stations",
+    "clouds": {
+        "all": 100
+    },
+    "cod": 200,
+    "coord": {
+        "lat": 6.9016,
+        "lon": 79.8599
+    },
+    "dt": 1749970150,
+    "id": 1226494,
+    "main": {
+        "feels_like": 29.81,
+        "grnd_level": 1008,
+        "humidity": 82,
+        "pressure": 1009,
+        "sea_level": 1009,
+        "temp": 26.95,
+        "temp_max": 26.95,
+        "temp_min": 26.95
+    },
+    "name": "Timbirigasyaya",
+    "sys": {
+        "country": "LK",
+        "sunrise": 1749947128,
+        "sunset": 1749992200
+    },
+    "timezone": 19800,
+    "visibility": 9089,
+    "weather": [
+        {
+            "description": "overcast clouds",
+            "icon": "04d",
+            "id": 804,
+            "main": "Clouds"
+        }
+    ],
+    "wind": {
+        "deg": 224,
+        "gust": 9.48,
+        "speed": 6.56
+    }
+}
