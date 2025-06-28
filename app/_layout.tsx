@@ -18,18 +18,7 @@ export default function RootLayout() {
         title: 'Settings',
         headerShown: true,
       }} />
-      <Stack.Screen name="deviceControl" options={{
-        title: 'Device Control',
-        headerShown: true,
-      }} />
-      <Stack.Screen name="weather" options={{
-        title: 'Weather',
-        headerShown: true,
-      }} />
-      <Stack.Screen name="empData" options={{
-        title: 'Employee Directory',
-        headerShown: true,
-      }} />
+
     </Stack>
   );
 }

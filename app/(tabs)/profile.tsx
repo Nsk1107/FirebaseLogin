@@ -34,23 +34,15 @@ export default function ProfileScreen() {
                 <Text style={styles.email}>Email: {email}</Text>
                 <Text style={styles.userId}>User ID: {userId}</Text>
             </View>
-            <Link href="/settings" asChild>
+            <Link href={{ pathname: "/settings", params: { from: "Profile" } }} asChild>
                 <TouchableOpacity style={styles.settingButton}>
                     <Text style={styles.buttonText}>Setting</Text>
                 </TouchableOpacity>
             </Link>
-            <TouchableOpacity onPress={() => router.push("/deviceControl")} style={styles.settingButton}>
-                <Text style={styles.buttonText}>Device Control</Text>
-            </TouchableOpacity>
-            <Link href="/weather" asChild>
-                <TouchableOpacity style={styles.settingButton}>
-                    <Text style={styles.buttonText}>Weather</Text>
-                </TouchableOpacity>
-            </Link>
+
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.buttonText}>Logout</Text>
             </TouchableOpacity>
-
 
         </View>
     );

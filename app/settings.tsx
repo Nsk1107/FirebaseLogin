@@ -1,6 +1,7 @@
 import * as Location from 'expo-location';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { FIREBASE_AUTH, FIREBASE_DB } from '../firebaseConfig';
 
@@ -13,6 +14,20 @@ export default function SettingsScreen() {
   const [locationString, setLocationString] = useState('');
   const [loadingLocation, setLoadingLocation] = useState(true);
 
+  // Dynamic header back title
+  // This will set the header back title based on the 'from' parameter in the URL
+  const { from } = useLocalSearchParams();
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    if (from && typeof from === 'string') {
+      navigation.setOptions({
+        headerBackTitle: from,
+      });
+    }
+  }, [from]);
+
+  // Fetch user data and location when the component mounts
+  // This will load the user's settings and current location when the screen is opened
   useEffect(() => {
     const fetchUserDataAndLocation = async () => {
       if (!FIREBASE_AUTH.currentUser) return;
